@@ -75,15 +75,21 @@ tags = ["language", "launcher"]
 [[plugin]]
 id = "noctalia/timer"
 name = "Timer"
-version = "1.2.2"
-updated_at = 1790733390
+version = "1.3.0"
+updated_at = 1791152436
 added_at = 1781407877
 author = "noctalia"
 license = "MIT"
 icon = "clock"
 description = "A countdown timer with bar widget, panel, and desktop widget."
-plugin_api = 3
+plugin_api = 20
 tags = ["countdown", "utility"]
+
+[[plugin.release]]
+plugin_api = 3
+version = "1.2.2"
+updated_at = 1790733390
+rev = "48beb7c3ed4e3b0065c57097237f2525bcb89cd8"
 
 [[plugin]]
 id = "noctalia/wallhaven"
