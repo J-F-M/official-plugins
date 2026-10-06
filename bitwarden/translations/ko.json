@@ -32,7 +32,7 @@
     "press-enter": "엔터를 눌러 복사",
     "serve-down": "bw serve에 연결할 수 없음",
     "serve-down-hint": "로컬 API 시작 후 잠금 해제",
-    "start-serve": "bw serve 시작",
+    "start-serve": "bw 서버 시작",
     "sync": "Vault 동기화",
     "sync-hint": "서버에서 최신 Vault 데이터 가져오기",
     "try-different": "다른 검색 시도",
@@ -83,7 +83,14 @@
       "description": "생성된 비밀번호에 숫자 포함",
       "label": "숫자 포함"
     },
+    "gen_special": {
+      "label": "특수문자 포함"
+    },
+    "gen_uppercase": {
+      "label": "대문자 포함"
+    },
     "notify_on_copy": {
+      "description": "Vault 필드를 복사하거나 비밀 생성 시 알림 표시",
       "label": "복사 시 알림"
     },
     "serve_port": {

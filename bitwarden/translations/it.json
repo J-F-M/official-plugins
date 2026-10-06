@@ -21,7 +21,7 @@
     "generate-hint": "Copia una nuova password (nei settings si impostano lunghezza/set di caratteri)",
     "generate-passphrase": "Genera passphrase",
     "generate-passphrase-hint": "Copia una nuova passphrase",
-    "lock": "Blocca vault",
+    "lock": "Blocca Vault",
     "lock-hint": "Blocca il servizio locale di bw",
     "login": "Login",
     "login-hint": "Accedi con la tua chiave API personale",
@@ -33,10 +33,10 @@
     "serve-down": "il servizio bw non è raggiungibile",
     "serve-down-hint": "Avvia l'API locale, quindi sblocca",
     "start-serve": "Avvia il servizio bw",
-    "sync": "Sincronizza il vault",
+    "sync": "Sincronizza il Vault",
     "sync-hint": "Estrai i dati più recenti del vault dal server",
     "try-different": "Prova una ricerca diversa",
-    "unlock": "Sblocca vault",
+    "unlock": "Sblocca Vault",
     "unlock-hint": "Apri la richiesta password",
     "vault-locked": "Vault bloccato"
   },
@@ -95,18 +95,35 @@
       "label": "Includi numeri nella passphrase"
     },
     "gen_passphrase_separator": {
+      "description": "Separatore fra parole della passphrase (es. - o spazio)",
       "label": "Separatore passphrase"
     },
     "gen_passphrase_words": {
+      "description": "Numero di parole nelle passphrases generate",
       "label": "Parole passphrase"
     },
+    "gen_special": {
+      "description": "Includi caratteri speciali nelle password generate",
+      "label": "Includi caratteri speciali"
+    },
+    "gen_uppercase": {
+      "description": "Includi lettere maiuscole nelle password generate",
+      "label": "Includi maiuscole"
+    },
+    "notify_on_copy": {
+      "description": "Mostra una notifica dopo aver copiato un campo o generato un secreto",
+      "label": "Notifica dopo la Copia"
+    },
     "serve_port": {
+      "description": "Local port per bw serve (associata solo a 127.0.0.1)",
       "label": "Porta servizio"
     },
     "server_url": {
+      "description": "URL server Bitwardern per il login (vuoto = default US cloud). Esempio: https://vault.bitwaraden.eu",
       "label": "URL server"
     },
     "vault_timeout": {
+      "description": "Blocca automaticamente il vault locale bw serve dopo un periodo di inattività, al riavvio di Noctalia, o mai (rimane sbloccato finché non blocchi/esci o il servizio si arresta, es. riavvio)",
       "label": "Timeout vault",
       "options": {
         "30": "30 minuti",
@@ -116,6 +133,10 @@
         "never": "Mai (fino allo stop del servizio)",
         "on_restart": "Al riavvio di Noctalia"
       }
+    },
+    "vault_timeout_custom_minutes": {
+      "description": "Minuti di inattività prima del blocco automatico quando il timeout del Vault è personalizzato",
+      "label": "Timeout personalizzato (Minuti)"
     }
   },
   "synced": "Vault sincronizzato",

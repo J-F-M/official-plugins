@@ -1,0 +1,8 @@
+{
+  "settings": {
+    "target_lang": {
+      "description": "Codice lingua usato quando nessuna lingua è fornita (es. en, fr, es)",
+      "label": "Lingua di destinazione predefinita"
+    }
+  }
+}

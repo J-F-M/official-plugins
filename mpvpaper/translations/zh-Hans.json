@@ -10,8 +10,13 @@
       "label": "可用 CPU 核心"
     },
     "auto_pause": {
-      "description": "全屏窗口覆盖壁纸时暂停播放（mpvpaper --auto-pause）",
-      "label": "覆盖时暂停"
+      "description": "窗口覆盖壁纸时暂停播放（实验性功能：可能不支持所有合成器）",
+      "label": "覆盖时暂停",
+      "options": {
+        "full": "全屏",
+        "max": "最大化",
+        "off": "关闭"
+      }
     },
     "cpu_quota": {
       "label": "CPU 配额"
@@ -52,6 +57,8 @@
       "label": "视频目录"
     }
   },
+  "slideshow": "幻灯片放映",
+  "slideshow_off": "关闭",
   "stop": "停止",
   "title": "视频壁纸"
 }

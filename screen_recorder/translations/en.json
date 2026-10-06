@@ -28,15 +28,11 @@
       "label": "Audio Source",
       "options": {
         "both": "Output + Microphone",
+        "custom": "Custom",
         "default_input": "Microphone",
         "default_output": "System Output",
-        "custom": "Custom",
         "none": "No Audio"
       }
-    },
-    "custom_audio_sources": {
-      "description": "Comma-separated gpu-screen-recorder audio sources.",
-      "label": "Custom Audio Sources"
     },
     "color_range": {
       "label": "Color Range",
@@ -47,6 +43,10 @@
     },
     "copy_to_clipboard": {
       "label": "Copy Path to Clipboard"
+    },
+    "custom_audio_sources": {
+      "description": "Comma-separated gpu-screen-recorder audio sources.",
+      "label": "Custom Audio Sources"
     },
     "directory": {
       "description": "Defaults to ~/Videos/Recordings when empty",
@@ -62,8 +62,8 @@
     "frame_rate_mode": {
       "label": "Frame Rate Mode",
       "options": {
-        "vfr": "Variable (VFR)",
-        "cfr": "Constant (CFR)"
+        "cfr": "Constant (CFR)",
+        "vfr": "Variable (VFR)"
       }
     },
     "glyph_idle": {
@@ -133,9 +133,9 @@
     "video_bitrate_mode": {
       "label": "Bitrate Mode",
       "options": {
+        "cbr": "Constant Bitrate (CBR)",
         "qp": "Constant Quality (QP)",
-        "vbr": "Variable Bitrate (VBR)",
-        "cbr": "Constant Bitrate (CBR)"
+        "vbr": "Variable Bitrate (VBR)"
       }
     },
     "video_codec": {
@@ -152,8 +152,8 @@
       "description": "CPU encoding only supports H264, GPU is hardware-accelerated",
       "label": "Video Encoder",
       "options": {
-        "gpu": "GPU",
-        "cpu": "CPU"
+        "cpu": "CPU",
+        "gpu": "GPU"
       }
     },
     "video_qp": {

@@ -10,6 +10,7 @@
   "empty": "배경화면을 찾을 수 없습니다.",
   "error": "요청 실패",
   "filter_aspect_ratio": "종황비",
+  "filter_categories": "카테고리",
   "filter_purity": "순도",
   "filter_resolution": "해상도",
   "filter_sort": "정렬",

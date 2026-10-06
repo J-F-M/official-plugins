@@ -18,9 +18,9 @@
       "description": "Size of the font in the panel",
       "label": "Text size",
       "options": {
-        "small": "Small",
+        "large": "Large",
         "normal": "Normal",
-        "large": "Large"
+        "small": "Small"
       }
     },
     "time_format": {

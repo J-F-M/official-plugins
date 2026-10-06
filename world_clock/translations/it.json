@@ -1,0 +1,14 @@
+{
+  "ipc": {
+    "duplicate_zone": "Fuso orario già aggiunto: {zone}",
+    "empty_list": "Nessun fuso orario configurato",
+    "invalid_zone": "Fuso orario sconosciuto: {zone}",
+    "missing_zone": "Fuso orario non nella lista: {zone}"
+  },
+  "title": "Orologio Globale",
+  "ui": {
+    "add_placeholder": "Europa/Berlino",
+    "drag_tooltip": "Trascina per riordinare",
+    "empty": "Nessun fuso orario. Aggiungi una zona IANA qui sotto"
+  }
+}
