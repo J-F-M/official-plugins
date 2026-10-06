@@ -34,6 +34,12 @@ noctalia.state.watch("timer.remaining", function (value)
   noctalia.state.set("timer.formattedTime", formatTime(value))
 end)
 
+local function resetTimer()
+  noctalia.state.set("timer.remaining", 0)
+  noctalia.state.set("timer.duration", 0)
+  noctalia.state.set("timer.state", "IDLE")
+end
+
 noctalia.state.watch("timer.cmd", function(cmd)
 
   local actions = {
@@ -54,9 +60,7 @@ noctalia.state.watch("timer.cmd", function(cmd)
       end
     end,
     RESET = function ()
-      noctalia.state.set("timer.remaining", 0)
-      noctalia.state.set("timer.duration", 0)
-      noctalia.state.set("timer.state", "IDLE")
+      resetTimer()
     end
   }
 
@@ -70,20 +74,23 @@ noctalia.state.watch("timer.cmd", function(cmd)
 
 end)
 
--- Opt-in completion alarm: the tick replays the sound while NOTIFY (any RESET
--- silences it), a failed load just stays silent until the next settings change retries.
+-- Completion alarm: the tick replays the sound while NOTIFY for alarm_duration
+-- seconds (0 silences it), then the timer returns to idle; the alarm bool keeps
+-- it beeping in NOTIFY until dismissed.
 local ALARM_SOUND = "alarm"
 local alarmEnabled = noctalia.getConfig("alarm") == true
 local alarmReady = false
+local alarmDuration = noctalia.getConfig("alarm_duration") or 10
+local notifyElapsed = 0
 
 local function playAlarm()
-  if alarmEnabled and alarmReady then
+  if alarmReady and (alarmEnabled or notifyElapsed < alarmDuration) then
     noctalia.sound.play(ALARM_SOUND)
   end
 end
 
 local function loadAlarm()
-  if not alarmEnabled or alarmReady then
+  if alarmReady or (not alarmEnabled and alarmDuration <= 0) then
     return
   end
   local accepted = noctalia.sound.load(ALARM_SOUND, "sounds/alarm.wav", function(ok, err)
@@ -102,6 +109,7 @@ loadAlarm()
 
 function onConfigChanged()
   alarmEnabled = noctalia.getConfig("alarm") == true
+  alarmDuration = noctalia.getConfig("alarm_duration") or 10
   loadAlarm()
 end
 
@@ -120,10 +128,15 @@ function update()
     else
       noctalia.state.set("timer.state", "NOTIFY")
       notifyUser()
+      notifyElapsed = 0
       playAlarm()
     end
 
   elseif STATE == "NOTIFY" then
+    notifyElapsed = notifyElapsed + 1
     playAlarm()
+    if not alarmEnabled and notifyElapsed >= alarmDuration then
+      resetTimer()
+    end
   end
 end
