@@ -3,6 +3,7 @@
 # single timer through noctalia.state. Demonstrates:
 #
 # service -> headless countdown logic + state, with command handling (START/PAUSE/RESET)
+#   and IPC: noctalia msg plugin noctalia/timer:timer all start <minutes>|pause|cancel
 # bar     -> declarative UI with per-placement settings; opens the panel
 # panel   -> interactive controls (typed duration input) driving the service
 # desktop -> keyboard-free +/- duration adjusters + a progress bar, pinned to the desktop

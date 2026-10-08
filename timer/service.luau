@@ -140,3 +140,28 @@ function update()
     end
   end
 end
+
+-- IPC entry point: noctalia msg plugin noctalia/timer:timer all <event> [payload].
+--   start <minutes>   e.g. start 40 = 40:00; ignored while a countdown is running,
+--                     so repeated calls (keybinds, shell aliases) cannot clobber
+--                     a running timer. While paused, resumes with the new duration.
+--   pause             pause the countdown, or resume it when paused
+--   cancel | reset    back to idle
+function onIpc(event, payload)
+  local mins = tonumber(payload)
+  if event == "start" then
+    if mins and mins > 0 and noctalia.state.get("timer.state") ~= "RUNNING" then
+      noctalia.state.set("timer.remaining", math.floor(mins * 60))
+      noctalia.state.set("timer.cmd", "START")
+    end
+  elseif event == "pause" then
+    local st = noctalia.state.get("timer.state")
+    if st == "RUNNING" then
+      noctalia.state.set("timer.cmd", "PAUSE")
+    elseif st == "PAUSED" then
+      noctalia.state.set("timer.cmd", "START")
+    end
+  elseif event == "cancel" or event == "reset" then
+    noctalia.state.set("timer.cmd", "RESET")
+  end
+end
