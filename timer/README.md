@@ -63,6 +63,10 @@ cannot clobber it. Otherwise it starts a fresh countdown of the requested
 duration — also while paused (refreshing the progress baseline) and through a
 ringing completion alarm, which it silences.
 
+Fractional minutes are rounded down to whole seconds. Invalid inputs,
+durations below one second, and durations that overflow to infinity are ignored
+without changing the current timer.
+
 ## Settings
 
 ### Plugin

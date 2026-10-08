@@ -169,8 +169,9 @@ function onIpc(event, payload)
     -- Applied synchronously; a queued START would let a second queued call
     -- observe IDLE and bypass the running-timer guard.
     local mins = tonumber(payload)
-    if mins and mins > 0 and STATE ~= "RUNNING" then
-      startCountdown(math.floor(mins * 60))
+    local seconds = mins and math.floor(mins * 60)
+    if seconds and seconds > 0 and seconds < math.huge and STATE ~= "RUNNING" then
+      startCountdown(seconds)
     end
   elseif event == "pause" then
     if STATE == "RUNNING" then
