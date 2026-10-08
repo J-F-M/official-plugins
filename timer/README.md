@@ -59,7 +59,9 @@ compositor keybinds (sway, Hyprland) and shell aliases:
     noctalia msg plugin noctalia/timer:timer all cancel     # reset to idle (`reset` alias)
 
 `start <minutes>` is ignored while a countdown is running, so repeated calls
-cannot clobber it; while paused, it resumes with the new duration.
+cannot clobber it. Otherwise it starts a fresh countdown of the requested
+duration — also while paused (refreshing the progress baseline) and through a
+ringing completion alarm, which it silences.
 
 ## Settings
 

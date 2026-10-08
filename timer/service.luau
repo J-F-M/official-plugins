@@ -40,31 +40,31 @@ local function resetTimer()
   noctalia.state.set("timer.state", "IDLE")
 end
 
-noctalia.state.watch("timer.cmd", function(cmd)
+-- Countdown state transitions, shared by the timer.cmd watcher (panel and bar
+-- commands) and the IPC handler below.
+local actions = {
+  PAUSE = function()
+    noctalia.state.set("timer.state", "PAUSED")
+  end,
+  START = function ()
+    local remaining = noctalia.state.get("timer.remaining")
+    local STATE = noctalia.state.get("timer.state")
 
-  local actions = {
-    PAUSE = function()
-      noctalia.state.set("timer.state", "PAUSED")
-    end,
-    START = function ()
-      local remaining = noctalia.state.get("timer.remaining")
-      local STATE = noctalia.state.get("timer.state")
-
-      if (STATE == "IDLE" or STATE == "PAUSED") and remaining > 0 then
-        -- Capture the total on a fresh start so progress bars have a baseline;
-        -- leave it untouched when resuming from PAUSED.
-        if STATE == "IDLE" then
-          noctalia.state.set("timer.duration", remaining)
-        end
-        noctalia.state.set("timer.state", "RUNNING")
+    if (STATE == "IDLE" or STATE == "PAUSED") and remaining > 0 then
+      -- Capture the total on a fresh start so progress bars have a baseline;
+      -- leave it untouched when resuming from PAUSED.
+      if STATE == "IDLE" then
+        noctalia.state.set("timer.duration", remaining)
       end
-    end,
-    RESET = function ()
-      resetTimer()
+      noctalia.state.set("timer.state", "RUNNING")
     end
-  }
+  end,
+  RESET = function ()
+    resetTimer()
+  end,
+}
 
-
+noctalia.state.watch("timer.cmd", function (cmd)
   local action = actions[cmd]
   if action then
     action()
@@ -141,27 +141,44 @@ function update()
   end
 end
 
+-- Begin a fresh countdown of the given duration, replacing whatever the timer
+-- shows: an idle timer, a paused one (also refreshing the progress baseline so
+-- bars do not divide by the old duration), or a ringing completion alarm,
+-- which this dismisses on the way to the new countdown. Used by the IPC
+-- handler only, which runs synchronously; queueing a timer.cmd event instead
+-- would apply the transition through the mailbox, letting a second queued
+-- call observe IDLE and bypass the running-timer guard.
+local function startCountdown(seconds)
+  notifyElapsed = 0
+  noctalia.state.set("timer.remaining", seconds)
+  noctalia.state.set("timer.duration", seconds)
+  noctalia.state.set("timer.state", "RUNNING")
+end
+
 -- IPC entry point: noctalia msg plugin noctalia/timer:timer all <event> [payload].
 --   start <minutes>   e.g. start 40 = 40:00; ignored while a countdown is running,
 --                     so repeated calls (keybinds, shell aliases) cannot clobber
---                     a running timer. While paused, resumes with the new duration.
+--                     a running timer. Otherwise it replaces the countdown with
+--                     the new duration (while paused too, refreshing the progress
+--                     baseline) and restarts out of the completion alarm.
 --   pause             pause the countdown, or resume it when paused
 --   cancel | reset    back to idle
 function onIpc(event, payload)
-  local mins = tonumber(payload)
+  local STATE = noctalia.state.get("timer.state")
   if event == "start" then
-    if mins and mins > 0 and noctalia.state.get("timer.state") ~= "RUNNING" then
-      noctalia.state.set("timer.remaining", math.floor(mins * 60))
-      noctalia.state.set("timer.cmd", "START")
+    -- Applied synchronously; a queued START would let a second queued call
+    -- observe IDLE and bypass the running-timer guard.
+    local mins = tonumber(payload)
+    if mins and mins > 0 and STATE ~= "RUNNING" then
+      startCountdown(math.floor(mins * 60))
     end
   elseif event == "pause" then
-    local st = noctalia.state.get("timer.state")
-    if st == "RUNNING" then
-      noctalia.state.set("timer.cmd", "PAUSE")
-    elseif st == "PAUSED" then
-      noctalia.state.set("timer.cmd", "START")
+    if STATE == "RUNNING" then
+      actions.PAUSE()
+    elseif STATE == "PAUSED" then
+      actions.START()
     end
   elseif event == "cancel" or event == "reset" then
-    noctalia.state.set("timer.cmd", "RESET")
+    actions.RESET()
   end
 end
